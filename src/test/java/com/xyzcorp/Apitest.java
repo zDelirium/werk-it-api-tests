@@ -15,7 +15,7 @@ public class Apitest {
 
 
     @Test
-    public void testloginget() {
+    public void testloginGet() {
 
         given()
                 .relaxedHTTPSValidation()
@@ -29,7 +29,7 @@ public class Apitest {
         //System.out.println();
     }
     @Test
-    public void failtestloginpost() {
+    public void failtestRegisterPost() {
         JSONObject UserObject = new JSONObject()
                 .put("username", "m")
                 .put("email", "uuui@gmail.com")
@@ -53,13 +53,13 @@ public class Apitest {
 
     }
     @Test
-    public void corectionfailtestloginpost() {
+    public void corectionfailtestRegisterPost() {
         JSONObject UserObject = new JSONObject()
-                .put("username", "m")
-                .put("email", "uuui@gmail.com")
-                .put("firstname", "dddghh")
-                .put("lastname", "dooi")
-                .put("password", "1111");
+                .put("username", "mami")
+                .put("email", "mami@gmail.com")
+                .put("firstName", "mamamam")
+                .put("lastName", "dommmm")
+                .put("password", "9988");
 
 
 
@@ -72,8 +72,8 @@ public class Apitest {
                 .post("https://staging.tiered-planet.net/werk-it-back-end/register")
                 .then()
                 .assertThat()
-                .statusCode(200)
-                .log().all();
+                .statusCode(200);
+                //.log().all();
 
     }
 }

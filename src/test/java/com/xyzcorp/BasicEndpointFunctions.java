@@ -15,7 +15,7 @@ public class BasicEndpointFunctions {
      * @param sutURL the endpoint to test
      * @param expectedStatusCode status code expected to be obtained
      */
-    void verifyGetEndpointStatusCode(String sutURL, int expectedStatusCode) {
+    void assertEndpointStatusCode(String sutURL, int expectedStatusCode) {
         given()
             .relaxedHTTPSValidation()
             .when()

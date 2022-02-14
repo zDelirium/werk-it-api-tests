@@ -26,7 +26,7 @@ public class TestLogin {
         int expectedStatusCode = 200;
 
         // Assert that the endpoint is valid
-        basicEndpointFunctions.verifyGetEndpointStatusCode(sutURL, expectedStatusCode);
+        basicEndpointFunctions.assertEndpointStatusCode(sutURL, expectedStatusCode);
         
         // Assert that the username field has the proper username
         basicEndpointFunctions.assertEndpointFieldValue(userNameField, userName, sutURL);
@@ -44,7 +44,7 @@ public class TestLogin {
         String sutURL = String.format("https://staging.tiered-planet.net/werk-it-back-end/login/%s/%s", userName, password);
         int expectedStatusCode = 401;
 
-        basicEndpointFunctions.verifyGetEndpointStatusCode(sutURL, expectedStatusCode);
+        basicEndpointFunctions.assertEndpointStatusCode(sutURL, expectedStatusCode);
     }
 
 }

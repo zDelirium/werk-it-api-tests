@@ -20,7 +20,7 @@ public class TestLogin {
      */
     @Test
     public void testValidLoginEndpoint() {
-        String userName  = "admin", password = "pilot";
+        String userName  = "sallys", password = "point234";
         String url = String.format("https://staging.tiered-planet.net/werk-it-back-end/login/%s/%s", userName, password);
         int expectedStatusCode = 200;
 

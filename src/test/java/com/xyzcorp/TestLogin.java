@@ -47,4 +47,11 @@ public class TestLogin {
         basicEndpointFunctions.assertEndpointStatusCode(sutURL, expectedStatusCode);
     }
 
+    @Test
+    public void testValidLoginInformation() {
+
+
+
+    }
+
 }

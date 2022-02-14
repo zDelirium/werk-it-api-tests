@@ -31,15 +31,15 @@ public class BasicEndpointFunctions {
      * @param expectedValue the value that the passed JSON field is expected to have
      * @param sutURL the endpoint to test
      */
-    void assertEndpointFieldValue(String JSONField, String expectedValue, String sutURL) {
+    void assertEndpointFieldValue(String JSONField, Object expectedValue, String sutURL) {
         given()
-        .relaxedHTTPSValidation()
-        .accept(ContentType.JSON)
-        .when()
-        .get(sutURL)
-        .then()
-        .assertThat()
-        .body(JSONField, equalTo(expectedValue));
+            .relaxedHTTPSValidation()
+            .accept(ContentType.JSON)
+            .when()
+            .get(sutURL)
+            .then()
+            .assertThat()
+            .body(JSONField, equalTo(expectedValue));
     }
 
 }

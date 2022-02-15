@@ -1,55 +1,33 @@
 package com.xyzcorp;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
-
 import java.util.HashMap;
 
-import org.json.JSONObject;
-
-import io.restassured.http.ContentType;
 
 public class TestWeights {
 
-    BasicEndpointFunctions basicEndpointFunctions;
+    HTTPRequestFunctions httpRequestFunctions;
 
     @BeforeEach
     void setup() {
-        basicEndpointFunctions = new BasicEndpointFunctions();
+        httpRequestFunctions = new HTTPRequestFunctions();
     }
 
-    // GET tests
-
-    /**
-     * Assert that the first element in aerobics/user/1 has all the expected
-     * elements.
-     * Since no DELETE or PUT operations has been implemented for Aerobics, element
-     * [0] should not change
-     */
     @Test
     public void testWeightExistance() {
-        int expectedUserId = 1;
-        int expectedpounds = 40, expectedReps = 20, expectedSets = 2, expectedWeightId = 2;
-        String expectedName = "bench press";
-
-        String setsField = "[0].sets", nameField = "[0].name",
-                userIdField = "[0].userId", weightIdField = "[0].id", repsField = "[0].reps",
-                poundsField = "[0].pounds";
+        HashMap<String, Object> expectedValuesMap = new HashMap<>();
+        expectedValuesMap.put("[0].id", 2);
+        expectedValuesMap.put("[0].name", "bench press");
+        expectedValuesMap.put("[0].sets", 2);
+        expectedValuesMap.put("[0].reps", 20);
+        expectedValuesMap.put("[0].pounds", 40);
+        expectedValuesMap.put("[0].userId", 1);
 
         String sutURL = String.format("https://staging.tiered-planet.net/werk-it-back-end/weights/user/%d",
-                expectedUserId);
+                expectedValuesMap.get("[0].userId"));
 
-        basicEndpointFunctions.assertEndpointFieldValue(weightIdField, expectedWeightId, sutURL);
-        basicEndpointFunctions.assertEndpointFieldValue(userIdField, expectedUserId, sutURL);
-        basicEndpointFunctions.assertEndpointFieldValue(nameField, expectedName, sutURL);
-        basicEndpointFunctions.assertEndpointFieldValue(setsField, expectedSets, sutURL);
-        basicEndpointFunctions.assertEndpointFieldValue(repsField, expectedReps, sutURL);
-        basicEndpointFunctions.assertEndpointFieldValue(poundsField, expectedpounds, sutURL);
-
+                expectedValuesMap.forEach((field, value) -> httpRequestFunctions.assertGetEndpointFieldValue(field, value, sutURL));
     }
 
 }

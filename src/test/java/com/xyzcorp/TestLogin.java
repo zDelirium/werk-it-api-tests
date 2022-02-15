@@ -14,7 +14,7 @@ public class TestLogin {
     void setup() {
         basicEndpointFunctions = new BasicEndpointFunctions();
     }
-    
+
     /**
      * Verify that an existing login endpoint returns status code 200, and that the JSON string contains the proper username and password
      */
@@ -27,7 +27,7 @@ public class TestLogin {
 
         // Assert that the endpoint is valid
         basicEndpointFunctions.assertEndpointStatusCode(sutURL, expectedStatusCode);
-        
+
         // Assert that the username field has the proper username
         basicEndpointFunctions.assertEndpointFieldValue(userNameField, userName, sutURL);
 
@@ -45,13 +45,6 @@ public class TestLogin {
         int expectedStatusCode = 401;
 
         basicEndpointFunctions.assertEndpointStatusCode(sutURL, expectedStatusCode);
-    }
-
-    @Test
-    public void testValidLoginInformation() {
-
-
-
     }
 
 }

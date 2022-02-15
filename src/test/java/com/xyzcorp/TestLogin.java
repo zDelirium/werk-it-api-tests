@@ -1,5 +1,8 @@
 package com.xyzcorp;
 
+import java.util.HashMap;
+
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,7 +11,13 @@ import org.junit.jupiter.api.Test;
  */
 public class TestLogin {
 
-    HTTPRequestFunctions httpRequestFunctions;
+    private HTTPRequestFunctions httpRequestFunctions;
+    private static String baseURL;
+
+    @BeforeAll
+    static void setupAll() {
+        baseURL = "https://staging.tiered-planet.net/werk-it-back-end/login";
+    }
 
     @BeforeEach
     void setup() {
@@ -16,23 +25,23 @@ public class TestLogin {
     }
 
     /**
-     * Verify that an existing login endpoint returns status code 200, and that the JSON string contains the proper username and password
+     * Verify that an existing login endpoint returns status code 200, and that the
+     * JSON string contains the proper username and password
      */
     @Test
     public void testValidLoginEndpoint() {
-        String userNameField = "username", passwordField = "password";
-        String userName  = "sallys", password = "point234";
-        String sutURL = String.format("https://staging.tiered-planet.net/werk-it-back-end/login/%s/%s", userName, password);
+        HashMap<String, String> loginValuesMap = new HashMap<>();
+        loginValuesMap.put("username", "dhinojosa");
+        loginValuesMap.put("password", "swimming");
+
+        String sutURL = String.format("%s/%s/%s", baseURL, loginValuesMap.get("username"),
+                loginValuesMap.get("password"));
         int expectedStatusCode = 200;
 
-        // Assert that the endpoint is valid
         httpRequestFunctions.assertGetEndpointStatusCode(sutURL, expectedStatusCode);
-        
-        // Assert that the username field has the proper username
-        httpRequestFunctions.assertGetEndpointFieldValue(userNameField, userName, sutURL);
 
-        httpRequestFunctions.assertGetEndpointFieldValue(passwordField, password, sutURL);
-
+        loginValuesMap.forEach((field, expectedValue) -> httpRequestFunctions.assertGetEndpointFieldValue(field,
+                expectedValue, sutURL));
     }
 
     /**
@@ -40,8 +49,8 @@ public class TestLogin {
      */
     @Test
     public void testInvalidLoginEndpoint() {
-        String userName  = "admin", password = "badclock";
-        String sutURL = String.format("https://staging.tiered-planet.net/werk-it-back-end/login/%s/%s", userName, password);
+        String userName = "admin", password = "badclock";
+        String sutURL = String.format("%s/%s/%s", baseURL, userName, password);
         int expectedStatusCode = 401;
 
         httpRequestFunctions.assertGetEndpointStatusCode(sutURL, expectedStatusCode);

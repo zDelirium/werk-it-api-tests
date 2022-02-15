@@ -11,11 +11,11 @@ import java.util.HashMap;
 
 public class TestAerobics {
     
-    BasicEndpointFunctions basicEndpointFunctions;
+    HTTPRequestFunctions httpRequestFunctions;
 
     @BeforeEach
     void setup() {
-        basicEndpointFunctions = new BasicEndpointFunctions();
+        httpRequestFunctions = new HTTPRequestFunctions();
     }
 
     // GET tests
@@ -34,10 +34,11 @@ public class TestAerobics {
 
         String sutURL = String.format("https://staging.tiered-planet.net/werk-it-back-end/aerobics/user/%d", expectedValuesMap.get("[0].userId"));
 
-        expectedValuesMap.forEach((field, value) -> basicEndpointFunctions.assertEndpointFieldValue(field, value, sutURL));
+        expectedValuesMap.forEach((field, value) -> httpRequestFunctions.assertGetEndpointFieldValue(field, value, sutURL));
     }
 
     // POST tests
+    
     /**
      * Assert that a POST to Aerobics with valid values returns status code 200
      */
@@ -51,7 +52,7 @@ public class TestAerobics {
         newValues.put("seconds", 1800);
         newValues.put("name", "Dance");
         
-        basicEndpointFunctions.assertPostEndpointStatusCode(sutURL, expectedStatusCode, newValues);
+        httpRequestFunctions.assertPostEndpointStatusCode(sutURL, expectedStatusCode, newValues);
     }
 
     @Test 

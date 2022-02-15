@@ -8,11 +8,11 @@ import org.junit.jupiter.api.Test;
  */
 public class TestLogin {
 
-    BasicEndpointFunctions basicEndpointFunctions;
+    HTTPRequestFunctions httpRequestFunctions;
 
     @BeforeEach
     void setup() {
-        basicEndpointFunctions = new BasicEndpointFunctions();
+        httpRequestFunctions = new HTTPRequestFunctions();
     }
     
     /**
@@ -26,12 +26,12 @@ public class TestLogin {
         int expectedStatusCode = 200;
 
         // Assert that the endpoint is valid
-        basicEndpointFunctions.assertEndpointStatusCode(sutURL, expectedStatusCode);
+        httpRequestFunctions.assertGetEndpointStatusCode(sutURL, expectedStatusCode);
         
         // Assert that the username field has the proper username
-        basicEndpointFunctions.assertEndpointFieldValue(userNameField, userName, sutURL);
+        httpRequestFunctions.assertGetEndpointFieldValue(userNameField, userName, sutURL);
 
-        basicEndpointFunctions.assertEndpointFieldValue(passwordField, password, sutURL);
+        httpRequestFunctions.assertGetEndpointFieldValue(passwordField, password, sutURL);
 
     }
 
@@ -44,7 +44,7 @@ public class TestLogin {
         String sutURL = String.format("https://staging.tiered-planet.net/werk-it-back-end/login/%s/%s", userName, password);
         int expectedStatusCode = 401;
 
-        basicEndpointFunctions.assertEndpointStatusCode(sutURL, expectedStatusCode);
+        httpRequestFunctions.assertGetEndpointStatusCode(sutURL, expectedStatusCode);
     }
 
 }

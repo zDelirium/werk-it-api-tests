@@ -4,14 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
 import java.util.HashMap;
-
-import org.json.JSONObject;
-
-import io.restassured.http.ContentType;
  
 
 public class TestAerobics {
@@ -31,24 +26,20 @@ public class TestAerobics {
      */
     @Test
     public void testExistingAerobicsGet() {
-        int expectedUserId = 1;
-        int expectedSeconds = 3000, expectedId = 265;
-        String expectedName = null;
+        HashMap<String, Object> expectedValuesMap = new HashMap<>();
+        expectedValuesMap.put("[0].seconds", 3000);
+        expectedValuesMap.put("[0].name", null);
+        expectedValuesMap.put("[0].userId", 1);
+        expectedValuesMap.put("[0].id", 265);
 
-        String secondsField = "[0].seconds", nameField = "[0].name", userIdField = "[0].userId", idField = "[0].id";
+        String sutURL = String.format("https://staging.tiered-planet.net/werk-it-back-end/aerobics/user/%d", expectedValuesMap.get("[0].userId"));
 
-        String sutURL = String.format("https://staging.tiered-planet.net/werk-it-back-end/aerobics/user/%d", expectedUserId);
-
-        basicEndpointFunctions.assertEndpointFieldValue(secondsField, expectedSeconds, sutURL);
-        basicEndpointFunctions.assertEndpointFieldValue(nameField, expectedName, sutURL);
-        basicEndpointFunctions.assertEndpointFieldValue(userIdField, expectedUserId, sutURL);
-        basicEndpointFunctions.assertEndpointFieldValue(idField, expectedId, sutURL);
-
+        expectedValuesMap.forEach((field, value) -> basicEndpointFunctions.assertEndpointFieldValue(field, value, sutURL));
     }
 
     // POST tests
     /**
-     * Assert that a POST to Aerobics with valid values is functional
+     * Assert that a POST to Aerobics with valid values returns status code 200
      */
     @Test
     public void testValidAerobicsPost() {
@@ -58,23 +49,9 @@ public class TestAerobics {
 
         HashMap<String, Object> newValues = new HashMap<>();
         newValues.put("seconds", 1800);
-        newValues.put("name", "Jogging");
+        newValues.put("name", "Dance");
         
-        // TODO refactor everything below in BasicEndpointFunctions.java
-        JSONObject newAreobicObject = new JSONObject();
-
-        newValues.forEach((name, value) -> newAreobicObject.put(name, value));
-
-        given()
-            .relaxedHTTPSValidation()
-            .accept(ContentType.JSON)
-            .contentType(ContentType.JSON)
-            .body(newAreobicObject.toString())
-            .when()
-            .post(sutURL)
-            .then()
-            .assertThat()
-            .statusCode(expectedStatusCode);
+        basicEndpointFunctions.assertPostEndpointStatusCode(sutURL, expectedStatusCode, newValues);
     }
 
     @Test 

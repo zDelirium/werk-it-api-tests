@@ -3,6 +3,10 @@ package com.xyzcorp;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
+import java.util.HashMap;
+
+import org.json.JSONObject;
+
 import io.restassured.http.ContentType;
 
 /**
@@ -40,6 +44,23 @@ public class BasicEndpointFunctions {
             .then()
             .assertThat()
             .body(JSONField, equalTo(expectedValue));
+    }
+
+    void assertPostEndpointStatusCode(String sutURL, int expectedStatusCode, HashMap<String, Object> newValues) {
+        JSONObject newAreobicObject = new JSONObject();
+    
+        newValues.forEach((name, value) -> newAreobicObject.put(name, value));
+    
+        given()
+            .relaxedHTTPSValidation()
+            .accept(ContentType.JSON)
+            .contentType(ContentType.JSON)
+            .body(newAreobicObject.toString())
+            .when()
+            .post(sutURL)
+            .then()
+            .assertThat()
+            .statusCode(expectedStatusCode);
     }
 
 }

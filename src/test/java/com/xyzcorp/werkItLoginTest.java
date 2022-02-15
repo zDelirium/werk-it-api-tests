@@ -1,10 +1,12 @@
 package com.xyzcorp;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import static io.restassured.RestAssured.given;
 
 public class werkItLoginTest {
     @Test
+    @Disabled
     public void testSuccessfulLogin() {
         given()
                 .relaxedHTTPSValidation()

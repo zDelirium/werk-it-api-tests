@@ -14,7 +14,7 @@ public class TestLogin {
     void setup() {
         httpRequestFunctions = new HTTPRequestFunctions();
     }
-    
+
     /**
      * Verify that an existing login endpoint returns status code 200, and that the JSON string contains the proper username and password
      */

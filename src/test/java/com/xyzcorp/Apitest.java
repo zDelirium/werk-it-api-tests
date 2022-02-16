@@ -1,17 +1,11 @@
 package com.xyzcorp;
 
-import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import io.restassured.response.Response;
-import io.restassured.assertion.DetailedCookieAssertion;
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-
-import static io.restassured.RestAssured.*;
+import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItem;
 
 public class Apitest {
 
@@ -28,9 +22,11 @@ public class Apitest {
                 .then()
                 .assertThat()
                 .statusCode(200)
+                .body("password",equalTo("4444"))
                 .log().all();
 
     }
+
     @Test
     // test  create profile
     // test   error in writting   key  username and lastname
@@ -43,7 +39,6 @@ public class Apitest {
                 .put("password", "1111");
 
 
-
         given()
                 .relaxedHTTPSValidation()
                 .accept(ContentType.JSON)
@@ -54,9 +49,11 @@ public class Apitest {
                 .then()
                 .assertThat()
                 .statusCode(200)
+                .body("email",equalTo("uuui@gmail.com"))
                 .log().all();
 
     }
+
     @Test
     // test  create profile
     public void corectionfailtestRegisterPost() {
@@ -68,7 +65,6 @@ public class Apitest {
                 .put("password", "9988");
 
 
-
         given()
                 .relaxedHTTPSValidation()
                 .accept(ContentType.JSON)
@@ -79,6 +75,7 @@ public class Apitest {
                 .then()
                 .assertThat()
                 .statusCode(200)
+                .body("username",equalTo("mami"))
                 .log().all();
 
     }
@@ -109,7 +106,7 @@ public class Apitest {
 
     @Test
 
-    // test  access
+    //  test access to list weight exercices for user
     public void testweightsGet() {
 
         given()
@@ -124,15 +121,15 @@ public class Apitest {
                 .log().all();
 
     }
+
     @Test
-    // create new  exercise
+    // create new  exercise weight
     public void WeightPost() {
         JSONObject UserObject = new JSONObject()
                 .put("name", "push")
                 .put("sets", 3)
                 .put("reps", 33)
-                .put("pounds", 50)
-                .put("userId", 9);
+                .put("pounds", 150);
 
 
 
@@ -146,6 +143,46 @@ public class Apitest {
                 .then()
                 .assertThat()
                 .statusCode(200)
+                .body("name",equalTo("push"))
+                .log().all();
+
+    }
+
+    @Test
+    // test access to list aerobics exercices for user
+    public void testAerorobicsGet() {
+
+        given()
+                .relaxedHTTPSValidation()
+                .accept(ContentType.JSON)
+                .when()
+                .get("https://staging.tiered-planet.net/werk-it-back-end/aerobics/user/19")
+                .then()
+                .assertThat()
+                .statusCode(200)
+                .body("[0].seconds",equalTo(783))
+                .log().all();
+    }
+    @Test
+    // create new  exercise aerobics
+    public void aerobicsPost() {
+        JSONObject UserObject = new JSONObject()
+                .put("name", "dance")
+                .put("seconds", 1000);
+
+
+
+        given()
+                .relaxedHTTPSValidation()
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .body(UserObject.toString())
+                .when()
+                .post("https://staging.tiered-planet.net/werk-it-back-end/aerobics/user/19")
+                .then()
+                .assertThat()
+                .statusCode(200)
+                .body("name",equalTo("dance"))
                 .log().all();
 
     }

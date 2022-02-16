@@ -1,5 +1,8 @@
 package com.xyzcorp;
 
+import java.util.HashMap;
+
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,23 +11,37 @@ import org.junit.jupiter.api.Test;
  */
 public class TestLogin {
 
-    BasicEndpointFunctions basicEndpointFunctions;
+    private HTTPRequestFunctions httpRequestFunctions;
+    private static String baseURL;
+
+    @BeforeAll
+    static void setupAll() {
+        baseURL = "https://staging.tiered-planet.net/werk-it-back-end/login";
+    }
 
     @BeforeEach
     void setup() {
-        basicEndpointFunctions = new BasicEndpointFunctions();
+        httpRequestFunctions = new HTTPRequestFunctions();
     }
-    
+
     /**
-     * Verify that an existing login endpoint returns status code 200
+     * Verify that an existing login endpoint returns status code 200, and that the
+     * JSON string contains the proper username and password
      */
     @Test
     public void testValidLoginEndpoint() {
-        String userName  = "admin", password = "pilot";
-        String url = String.format("https://staging.tiered-planet.net/werk-it-back-end/login/%s/%s", userName, password);
+        HashMap<String, String> loginValuesMap = new HashMap<>();
+        loginValuesMap.put("username", "dhinojosa");
+        loginValuesMap.put("password", "swimming");
+
+        String sutURL = String.format("%s/%s/%s", baseURL, loginValuesMap.get("username"),
+                loginValuesMap.get("password"));
         int expectedStatusCode = 200;
 
-        basicEndpointFunctions.verifyGetEndpointStatusCode(url, expectedStatusCode);
+        httpRequestFunctions.assertGetEndpointStatusCode(sutURL, expectedStatusCode);
+
+        loginValuesMap.forEach((field, expectedValue) -> httpRequestFunctions.assertGetEndpointFieldValue(field,
+                expectedValue, sutURL));
     }
 
     /**
@@ -32,11 +49,11 @@ public class TestLogin {
      */
     @Test
     public void testInvalidLoginEndpoint() {
-        String userName  = "admin", password = "badclock";
-        String url = String.format("https://staging.tiered-planet.net/werk-it-back-end/login/%s/%s", userName, password);
+        String userName = "admin", password = "badclock";
+        String sutURL = String.format("%s/%s/%s", baseURL, userName, password);
         int expectedStatusCode = 401;
 
-        basicEndpointFunctions.verifyGetEndpointStatusCode(url, expectedStatusCode);
+        httpRequestFunctions.assertGetEndpointStatusCode(sutURL, expectedStatusCode);
     }
 
 }

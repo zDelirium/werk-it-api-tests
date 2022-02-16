@@ -6,12 +6,13 @@ import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.nullValue;
 
 public class Apitest {
 
 
     @Test
-    // test access to page
+
     public void testloginGet() {
 
         given()
@@ -50,6 +51,7 @@ public class Apitest {
                 .assertThat()
                 .statusCode(200)
                 .body("email",equalTo("uuui@gmail.com"))
+                .body("firstName",nullValue())
                 .log().all();
 
     }
@@ -117,7 +119,7 @@ public class Apitest {
                 .then()
                 .assertThat()
                 .statusCode(200)
-
+                .body("[0].name",equalTo("bench press"))
                 .log().all();
 
     }
